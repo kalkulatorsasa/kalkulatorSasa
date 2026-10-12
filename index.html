@@ -5,75 +5,147 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kalkulator Sasa</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #ffe6f2;
-  text-align: center;
-  padding: 25px;
-}
-.kalkulator {
-  background: white;
-  max-width: 320px;
-  margin: auto;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px #e8a9ca;
-}
-h1 { color: #e75499; }
-input {
-  width: 90%;
-  padding: 12px;
-  margin: 8px 0;
-  font-size: 18px;
-  border: 2px solid #ffb6d9;
-  border-radius: 10px;
+* {
   box-sizing: border-box;
 }
-button {
-  background: #f58abb;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  margin: 5px;
-  border-radius: 10px;
-  font-size: 18px;
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #ffe6f2;
+  font-family: Arial, sans-serif;
 }
-#hasil { color: #d63384; font-size: 22px; }
+.calculator {
+  width: 320px;
+  padding: 22px;
+  border-radius: 25px;
+  background: white;
+  box-shadow: 0 8px 25px #e9a9c8;
+}
+h1 {
+  color: #e7549b;
+  text-align: center;
+  margin-top: 0;
+}
+#display {
+  width: 100%;
+  height: 65px;
+  margin-bottom: 15px;
+  border: 2px solid #ffc1dd;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 25px;
+  text-align: right;
+  background: #fff7fb;
+  color: #7d2452;
+}
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 9px;
+}
+button {
+  height: 55px;
+  border: none;
+  border-radius: 13px;
+  background: #ffe0ef;
+  color: #8b315d;
+  font-size: 21px;
+  font-weight: bold;
+  cursor: pointer;
+}
+button:active {
+  transform: scale(0.95);
+}
+.operator {
+  background: #ffafd2;
+}
+.clear {
+  background: #ff80b7;
+  color: white;
+}
+.equal {
+  background: #e7549b;
+  color: white;
+}
+.zero {
+  grid-column: span 2;
+}
+p {
+  text-align: center;
+  color: #d85a96;
+  font-size: 12px;
+}
 </style>
 </head>
 <body>
-<div class="kalkulator">
-<h1>🎀 Kalkulator Sasa 🎀</h1>
-<input type="number" id="angka1" placeholder="Angka pertama">
-<input type="number" id="angka2" placeholder="Angka kedua">
-<div>
-<button onclick="hitung('+')">+</button>
-<button onclick="hitung('-')">−</button>
-<button onclick="hitung('*')">×</button>
-<button onclick="hitung('/')">÷</button>
+<div class="calculator">
+  <h1>🎀 Kalkulator Sasa 🎀</h1>
+  <input id="display" value="0" readonly>
+  <div class="buttons">
+    <button class="clear" onclick="clearDisplay()">C</button>
+    <button onclick="del()">⌫</button>
+    <button class="operator" onclick="add('/')">÷</button>
+    <button class="operator" onclick="add('*')">×</button>
+
+    <button onclick="add('7')">7</button>
+    <button onclick="add('8')">8</button>
+    <button onclick="add('9')">9</button>
+    <button class="operator" onclick="add('-')">−</button>
+
+    <button onclick="add('4')">4</button>
+    <button onclick="add('5')">5</button>
+    <button onclick="add('6')">6</button>
+    <button class="operator" onclick="add('+')">+</button>
+
+    <button onclick="add('1')">1</button>
+    <button onclick="add('2')">2</button>
+    <button onclick="add('3')">3</button>
+    <button class="equal" onclick="calculate()">=</button>
+
+    <button class="zero" onclick="add('0')">0</button>
+    <button onclick="add('.')">.</button>
+  </div>
+  <p>♡ Dibuat dengan cinta untuk Sasa ♡</p>
 </div>
-<h3>Hasil:</h3>
-<p id="hasil">💗</p>
-</div>
+
 <script>
-function hitung(operator) {
-  let a = Number(document.getElementById("angka1").value);
-  let b = Number(document.getElementById("angka2").value);
-  if (document.getElementById("angka1").value === "" ||
-      document.getElementById("angka2").value === "") {
-    document.getElementById("hasil").textContent = "Isi kedua angka dulu!";
+let expression = '';
+const display = document.getElementById('display');
+
+function add(value) {
+  expression += value;
+  display.value = expression;
+}
+
+function clearDisplay() {
+  expression = '';
+  display.value = '0';
+}
+
+function del() {
+  expression = expression.slice(0, -1);
+  display.value = expression || '0';
+}
+
+function calculate() {
+  if (!expression) return;
+  if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
+    display.value = 'Error';
+    expression = '';
     return;
   }
-  if (operator === "/" && b === 0) {
-    document.getElementById("hasil").textContent = "Tidak bisa dibagi nol!";
-    return;
+  try {
+    const result = Function('"use strict"; return (' + expression + ')')();
+    if (!Number.isFinite(result)) throw new Error();
+    expression = String(Number(result.toPrecision(12)));
+    display.value = expression;
+  } catch {
+    display.value = 'Error';
+    expression = '';
   }
-  let hasil;
-  if (operator === "+") hasil = a + b;
-  if (operator === "-") hasil = a - b;
-  if (operator === "*") hasil = a * b;
-  if (operator === "/") hasil = a / b;
-  document.getElementById("hasil").textContent = hasil;
 }
 </script>
 </body>
