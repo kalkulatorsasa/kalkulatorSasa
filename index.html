@@ -1,102 +1,86 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kalkulator Sasa</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:linear-gradient(135deg,#e2f3ff,#ffffff,#d9efff);
+  font-family:'Nunito',sans-serif;
 }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background: #ffe6f2;
-  font-family: Arial, sans-serif;
+.calculator{
+  width:100%;
+  max-width:340px;
+  padding:25px;
+  background:#ffffff;
+  border-radius:26px;
+  box-shadow:0 10px 30px #b9def044;
 }
-
-.calculator {
-  width: 100%;
-  max-width: 340px;
-  padding: 24px;
-  border-radius: 24px;
-  background: #ffffff;
-  box-shadow: 0 8px 25px #e9a9c8;
+h1{
+  margin:0 0 22px;
+  text-align:center;
+  font-size:27px;
+  font-weight:800;
+  color:#8fc9ec;
 }
-
-h1 {
-  color: #c21870;
-  text-align: center;
-  font-size: 25px;
-  margin: 0 0 20px;
+#display{
+  width:100%;
+  height:65px;
+  margin-bottom:18px;
+  padding:12px;
+  border:2px solid #e5f4ff;
+  border-radius:16px;
+  background:#f8fcff;
+  color:#72b2dc;
+  text-align:right;
+  font-family:'Nunito',sans-serif;
+  font-size:27px;
+  font-weight:800;
 }
-
-#display {
-  width: 100%;
-  height: 70px;
-  margin-bottom: 16px;
-  border: 2px solid #f3a4ca;
-  border-radius: 12px;
-  padding: 12px;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: right;
-  background: #ffffff;
-  color: #171717;
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
 }
-
-.buttons {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+button{
+  height:56px;
+  border:none;
+  border-radius:16px;
+  background:#f1f9ff;
+  color:#83bde2;
+  font-family:'Nunito',sans-serif;
+  font-size:20px;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 3px 0 #e0f0fb;
 }
-
-button {
-  min-width: 0;
-  height: 58px;
-  border: 1px solid #f2c2d9;
-  border-radius: 13px;
-  background: #fff0f7;
-  color: #25101c;
-  font-size: 22px;
-  font-weight: bold;
-  cursor: pointer;
+button:active{transform:scale(.95)}
+.operator{background:#dff1ff;color:#78b8df}
+.clear{background:#c9e9fc;color:#ffffff}
+.equal{
+  background:#a9d9f5;
+  color:#ffffff;
+  grid-row:span 2;
+  height:auto;
 }
-
-button:active {
-  transform: scale(0.96);
-}
-
-.operator {
-  background: #ffafd2;
-  color: #351027;
-}
-
-.clear {
-  background: #d93682;
-  color: #ffffff;
-}
-
-.equal {
-  background: #a91560;
-  color: #ffffff;
-}
-
-.zero {
-  grid-column: span 2;
-}
-
-p {
-  margin: 18px 0 0;
-  text-align: center;
-  color: #8b315d;
-  font-size: 12px;
+.zero{grid-column:span 2}
+.footer{
+  margin-top:20px;
+  text-align:center;
+  color:#a6cde6;
+  font-size:12px;
+  font-weight:700;
 }
 </style>
 </head>
@@ -104,80 +88,85 @@ p {
 <body>
 <div class="calculator">
   <h1>Kalkulator Sasa</h1>
-
-  <input id="display" value="0" readonly
-  aria-label="Layar kalkulator">
+  <input type="text" id="display" value="0" readonly>
 
   <div class="buttons">
-    <button class="clear" onclick="clearDisplay()">C</button>
-    <button onclick="del()">⌫</button>
-    <button class="operator" onclick="add('/')">÷</button>
-    <button class="operator" onclick="add('*')">×</button>
+    <button class="clear" onclick="clearDisplay()">AC</button>
+    <button class="operator" onclick="addOperator('/')">÷</button>
+    <button class="operator" onclick="addOperator('*')">×</button>
+    <button class="operator" onclick="deleteLast()">⌫</button>
 
-    <button onclick="add('7')">7</button>
-    <button onclick="add('8')">8</button>
-    <button onclick="add('9')">9</button>
-    <button class="operator" onclick="add('-')">−</button>
+    <button onclick="addNumber('7')">7</button>
+    <button onclick="addNumber('8')">8</button>
+    <button onclick="addNumber('9')">9</button>
+    <button class="operator" onclick="addOperator('-')">−</button>
 
-    <button onclick="add('4')">4</button>
-    <button onclick="add('5')">5</button>
-    <button onclick="add('6')">6</button>
-    <button class="operator" onclick="add('+')">+</button>
+    <button onclick="addNumber('4')">4</button>
+    <button onclick="addNumber('5')">5</button>
+    <button onclick="addNumber('6')">6</button>
+    <button class="operator" onclick="addOperator('+')">+</button>
 
-    <button onclick="add('1')">1</button>
-    <button onclick="add('2')">2</button>
-    <button onclick="add('3')">3</button>
+    <button onclick="addNumber('1')">1</button>
+    <button onclick="addNumber('2')">2</button>
+    <button onclick="addNumber('3')">3</button>
     <button class="equal" onclick="calculate()">=</button>
 
-    <button class="zero" onclick="add('0')">0</button>
-    <button onclick="add('.')">.</button>
+    <button class="zero" onclick="addNumber('0')">0</button>
+    <button onclick="addNumber('.')">.</button>
   </div>
 
-  <p>Dibuat dengan cinta untuk Sasa</p>
+  <div class="footer">Kalkulator simpel by Sasa</div>
 </div>
 
 <script>
-let expression = '';
-const display = document.getElementById('display');
+let expression='';
+const display=document.getElementById('display');
 
-function add(value) {
-  expression += value;
-  display.value = expression;
+function updateDisplay(){
+  display.value=expression||'0';
 }
 
-function clearDisplay() {
-  expression = '';
-  display.value = '0';
+function addNumber(number){
+  if(number==='.'&&expression.split(/[+\-*/]/).pop().includes('.'))return;
+  expression+=number;
+  updateDisplay();
 }
 
-function del() {
-  expression = expression.slice(0, -1);
-  display.value = expression || '0';
-}
-
-function calculate() {
-  if (!expression) return;
-
-  if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
-    display.value = 'Error';
-    expression = '';
-    return;
+function addOperator(operator){
+  if(!expression&&operator!=='-')return;
+  if(/[+\-*/]$/.test(expression)){
+    expression=expression.slice(0,-1);
   }
+  expression+=operator;
+  updateDisplay();
+}
 
-  try {
-    const result = Function(
-      '"use strict"; return (' + expression + ')'
-    )();
+function clearDisplay(){
+  expression='';
+  updateDisplay();
+}
 
-    if (!Number.isFinite(result)) {
-      throw new Error('Perhitungan tidak valid');
+function deleteLast(){
+  expression=expression.slice(0,-1);
+  updateDisplay();
+}
+
+function calculate(){
+  try{
+    if(!expression||!/^[0-9+\-*/. ]+$/.test(expression))return;
+    const result=Function('"use strict";return ('+expression+')')();
+
+    if(!Number.isFinite(result)){
+      display.value='Tidak valid';
+      expression='';
+      return;
     }
 
-    expression = String(Number(result.toPrecision(12)));
-    display.value = expression;
-  } catch {
-    display.value = 'Error';
-    expression = '';
+    expression=String(Math.round((result+Number.EPSILON)*1e10)/1e10);
+    updateDisplay();
+  }catch{
+    display.value='Error';
+    expression='';
   }
 }
 </script>
