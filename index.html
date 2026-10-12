@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalkulator Sasa</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #ffe6f2;
+  text-align: center;
+  padding: 25px;
+}
+.kalkulator {
+  background: white;
+  max-width: 320px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px #e8a9ca;
+}
+h1 { color: #e75499; }
+input {
+  width: 90%;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 18px;
+  border: 2px solid #ffb6d9;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+button {
+  background: #f58abb;
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  margin: 5px;
+  border-radius: 10px;
+  font-size: 18px;
+}
+#hasil { color: #d63384; font-size: 22px; }
+</style>
+</head>
+<body>
+<div class="kalkulator">
+<h1>🎀 Kalkulator Sasa 🎀</h1>
+<input type="number" id="angka1" placeholder="Angka pertama">
+<input type="number" id="angka2" placeholder="Angka kedua">
+<div>
+<button onclick="hitung('+')">+</button>
+<button onclick="hitung('-')">−</button>
+<button onclick="hitung('*')">×</button>
+<button onclick="hitung('/')">÷</button>
+</div>
+<h3>Hasil:</h3>
+<p id="hasil">💗</p>
+</div>
+<script>
+function hitung(operator) {
+  let a = Number(document.getElementById("angka1").value);
+  let b = Number(document.getElementById("angka2").value);
+  if (document.getElementById("angka1").value === "" ||
+      document.getElementById("angka2").value === "") {
+    document.getElementById("hasil").textContent = "Isi kedua angka dulu!";
+    return;
+  }
+  if (operator === "/" && b === 0) {
+    document.getElementById("hasil").textContent = "Tidak bisa dibagi nol!";
+    return;
+  }
+  let hasil;
+  if (operator === "+") hasil = a + b;
+  if (operator === "-") hasil = a - b;
+  if (operator === "*") hasil = a * b;
+  if (operator === "/") hasil = a / b;
+  document.getElementById("hasil").textContent = hasil;
+}
+</script>
+</body>
+</html>
